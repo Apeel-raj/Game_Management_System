@@ -1,67 +1,89 @@
 -- ============================================================
 -- GameVault Management System - Database Setup Script
+-- Generated from phpMyAdmin | MariaDB 10.4 / MySQL 8 compatible
 -- Run this entire file in phpMyAdmin or MySQL Workbench
 -- ============================================================
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 -- 1. Create and select the database
-CREATE DATABASE IF NOT EXISTS gamevault_db;
-USE gamevault_db;
+CREATE DATABASE IF NOT EXISTS `gamevault_db`;
+USE `gamevault_db`;
 
--- 2. Users table
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user',
-    status ENUM('pending', 'active') DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- --------------------------------------------------------
+-- Table: users
+-- --------------------------------------------------------
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('user','admin') DEFAULT 'user',
+  `status` enum('pending','active') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 3. Games table
-CREATE TABLE IF NOT EXISTS games (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    genre VARCHAR(50) NOT NULL,
-    platform VARCHAR(50) NOT NULL,
-    release_date DATE,
-    price DECIMAL(10, 2) NOT NULL,
-    image_path VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- --------------------------------------------------------
+-- Table: games
+-- --------------------------------------------------------
+CREATE TABLE `games` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `genre` varchar(50) NOT NULL,
+  `platform` varchar(50) NOT NULL,
+  `release_date` date DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 4. Wishlist table (session-based, but kept for future DB persistence)
-CREATE TABLE IF NOT EXISTS wishlist (
-    user_id INT,
-    game_id INT,
-    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, game_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
-);
+-- --------------------------------------------------------
+-- Table: wishlist
+-- --------------------------------------------------------
+CREATE TABLE `wishlist` (
+  `user_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`user_id`,`game_id`),
+  KEY `game_id` (`game_id`),
+  CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 5. Purchases table (tracks sales for Admin analytics)
-CREATE TABLE IF NOT EXISTS purchases (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    game_id INT NOT NULL,
-    price_at_purchase DECIMAL(10, 2) NOT NULL,
-    purchase_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
-);
+-- --------------------------------------------------------
+-- Table: purchases
+-- --------------------------------------------------------
+CREATE TABLE `purchases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `price_at_purchase` decimal(10,2) NOT NULL,
+  `purchase_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `game_id` (`game_id`),
+  CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- ============================================================
--- OPTIONAL: Seed some sample games to get started
--- ============================================================
-INSERT INTO games (title, genre, platform, release_date, price) VALUES
-('The Witcher 3', 'RPG', 'PC', '2015-05-19', 29.99),
-('Elden Ring', 'Action RPG', 'PC', '2022-02-25', 59.99),
-('Minecraft', 'Sandbox', 'PC', '2011-11-18', 26.95);
+-- --------------------------------------------------------
+-- Sample Games (optional starter data)
+-- --------------------------------------------------------
+INSERT INTO `games` (`title`, `genre`, `platform`, `release_date`, `price`) VALUES
+('GTA V', 'Action', 'Steam', '2015-04-14', 29.99),
+('Minecraft', 'Sandbox', 'PC', '2011-11-18', 26.95),
+('Elden Ring', 'Action RPG', 'PC', '2022-02-25', 59.99);
+
+COMMIT;
 
 -- ============================================================
 -- HOW TO MAKE AN ADMIN ACCOUNT:
 -- 1. Register normally on the website.
--- 2. Then run this query (replace the email with yours):
+-- 2. Then run this query (replace with your email):
 --    UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
 -- ============================================================
