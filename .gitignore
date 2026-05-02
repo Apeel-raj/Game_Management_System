@@ -1,0 +1,24 @@
+# Maven build output
+target/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+bin/
+
+# IDE files
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / secrets (do not commit DB passwords!)
+# DBConnection.java is committed but be careful with credentials
