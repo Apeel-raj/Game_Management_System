@@ -45,7 +45,7 @@ git clone https://github.com/Apeel-raj/Game_Management_System.git
 ### 2. Set Up the Database
 - Open **phpMyAdmin** or **MySQL Workbench**
 - Run the full `database.sql` file included in the root of this project
-- This will create the `gamevault_db` database, all tables, and seed 3 sample games
+- This will create the `gamevault_db` database, all tables, and seed **33 sample games**
 
 ### 3. Configure Database Connection
 Open `src/main/java/com/gamevault/util/DBConnection.java` and update:
