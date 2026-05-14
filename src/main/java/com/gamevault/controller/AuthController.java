@@ -76,7 +76,7 @@ public class AuthController extends HttpServlet {
             if ("admin".equals(user.getRole())) {
                 response.sendRedirect("admin/dashboard"); // We will create this admin route later
             } else {
-                response.sendRedirect("index.jsp"); // Normal users go to the homepage
+                response.sendRedirect("games"); // Normal users go to the homepage
             }
         } else {
             // Login failed
@@ -99,7 +99,7 @@ public class AuthController extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else {
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("games");
         }
     }
 }

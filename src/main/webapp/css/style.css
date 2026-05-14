@@ -1,13 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@300;400;700&display=swap'); /* Using a generic font, Steam uses Motiva Sans */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg-color: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --accent-glow: #38bdf8;
-    --accent-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --bg-main: #171a21;
+    --bg-secondary: #1b2838;
+    --bg-card: rgba(0, 0, 0, 0.4);
+    --bg-card-hover: rgba(42, 71, 94, 0.6);
+    --text-primary: #c7d5e0;
+    --text-bright: #ffffff;
+    --text-muted: #8f98a0;
+    --accent-blue: #66c0f4;
+    --accent-blue-dark: #2a475e;
+    --accent-green: #a4d007; /* Steam's add to cart/discount green */
+    --accent-green-gradient: linear-gradient(135deg, #749e15, #54720c);
+    --accent-blue-gradient: linear-gradient(135deg, #66c0f4, #2a475e);
+    --border-light: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -17,39 +24,24 @@
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
-    background-color: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    position: relative;
 }
 
-/* Background ambient glow */
+/* Background gradient like Steam Store */
 body::before {
     content: '';
     position: fixed;
-    top: -20%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: -1;
-    pointer-events: none;
-}
-
-body::after {
-    content: '';
-    position: fixed;
-    bottom: -20%;
-    right: -10%;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, rgba(129, 140, 248, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 600px;
+    background: radial-gradient(ellipse at top center, rgba(27, 40, 56, 1) 0%, rgba(23, 26, 33, 0) 100%);
     z-index: -1;
     pointer-events: none;
 }
@@ -59,58 +51,80 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 5%;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 5%;
+    background: #171a21;
+    border-bottom: 1px solid var(--border-light);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
 .logo {
     font-size: 1.8rem;
     font-weight: 800;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-bright);
+    text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+}
+
+.logo span.accent {
+    color: var(--accent-blue);
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
 }
 
 .nav-links a {
     color: var(--text-primary);
     text-decoration: none;
-    font-weight: 400;
-    transition: color 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-    color: var(--accent-glow);
+    color: var(--text-bright);
 }
 
-.btn-primary {
-    background: var(--accent-gradient);
-    color: white;
-    padding: 0.6rem 1.5rem;
-    border-radius: 2rem;
+.btn {
+    background: var(--bg-secondary);
+    color: var(--accent-blue);
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
     text-decoration: none;
     font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: var(--accent-blue);
+    color: var(--text-bright);
+}
+
+.btn-primary {
+    background: var(--accent-green-gradient);
+    color: #e5e4e2;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+    filter: brightness(1.2);
+    color: #fff;
 }
 
 /* Auth Containers (Login/Register) */
@@ -119,36 +133,29 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 4rem 2rem;
 }
 
 .glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 1.5rem;
+    background: #181a21;
+    border: 1px solid rgba(0,0,0,0.6);
     padding: 3rem;
     width: 100%;
     max-width: 450px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
 }
 
 .glass-card h2 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
-    text-align: center;
+    color: var(--text-bright);
+    font-weight: 300;
+    letter-spacing: 1px;
 }
 
 .glass-card p {
-    color: var(--text-secondary);
-    text-align: center;
+    color: var(--text-muted);
     margin-bottom: 2rem;
 }
 
@@ -159,25 +166,27 @@ nav {
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
+    font-size: 0.85rem;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .form-group input, .form-group select {
     width: 100%;
     padding: 0.8rem 1rem;
-    background: rgba(15, 23, 42, 0.5);
-    border: 1px solid var(--glass-border);
-    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid #32353c;
+    border-radius: 3px;
     color: var(--text-primary);
     font-family: inherit;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus, .form-group select:focus {
     outline: none;
-    border-color: var(--accent-glow);
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-blue);
 }
 
 .btn-full {
@@ -189,29 +198,30 @@ nav {
 
 .switch-auth {
     margin-top: 1.5rem;
-    text-align: center;
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--text-muted);
 }
 
 .switch-auth a {
-    color: var(--accent-glow);
-    text-decoration: none;
-    font-weight: 600;
+    color: var(--text-bright);
+    text-decoration: underline;
+}
+
+.switch-auth a:hover {
+    color: var(--accent-blue);
 }
 
 .alert {
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 3px;
     margin-bottom: 1.5rem;
-    text-align: center;
     font-size: 0.9rem;
 }
 
 .alert.error {
-    background: rgba(239, 68, 68, 0.1);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: rgba(168, 56, 56, 0.2);
+    color: #ff5b5b;
+    border: 1px solid rgba(168, 56, 56, 0.4);
 }
 
 .alert.success {
@@ -222,8 +232,8 @@ nav {
 
 /* Main Dashboard / Index */
 .main-content {
-    padding: 4rem 5%;
-    max-width: 1400px;
+    padding: 2rem 5%;
+    max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
@@ -232,81 +242,257 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    background: rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    border-radius: 4px;
 }
 
 .header-section h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-bright);
 }
 
-.games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+.accent {
+    color: var(--accent-blue);
 }
 
-.game-card {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Section Titles */
+.section-title {
+    font-size: 1.2rem;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 3rem 0 1rem;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 1.2rem;
+    background: var(--accent-blue);
+}
+
+/* Games Grid */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
-.game-logo-container {
-    width: 100px;
-    height: 100px;
-    border-radius: 12px;
+/* Deals Grid - larger display */
+.deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Game Card */
+.game-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,0,0,0.5);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    background: rgba(15, 23, 42, 0.8);
+    position: relative;
+}
+
+.game-card:hover {
+    transform: scale(1.02);
+    background: var(--bg-card-hover);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+/* Specific Deals Card Layout */
+.deals-grid .game-card {
+    flex-direction: row;
+    min-height: 160px;
+    height: auto;
+}
+
+.game-logo-container {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.deals-grid .game-logo-container {
+    width: 45%;
+    height: 100%;
 }
 
 .game-logo-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.game-card:hover .game-logo-container img {
+    transform: scale(1.05);
 }
 
 .game-content {
-    flex: 1;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-}
-
-.game-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: rgba(56, 189, 248, 0.3);
+    flex: 1;
 }
 
 .game-title {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    color: var(--text-bright);
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.game-meta {
+.deals-grid .game-title {
+    font-size: 1.2rem;
+    white-space: normal;
+}
+
+.game-genre {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 0.5rem;
+}
+
+.game-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.game-footer {
     display: flex;
     justify-content: space-between;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.game-price-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.discount-badge {
+    background: var(--accent-green);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
 }
 
 .game-price {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--accent-glow);
-    margin-top: auto;
+    font-size: 1.1rem;
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.deals-grid .game-price {
+    color: var(--accent-green);
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.card-actions form {
+    margin: 0;
+}
+
+.btn-small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.btn-action {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 2px;
+}
+
+.btn-action:hover {
+    background: rgba(255,255,255,0.2);
+    color: var(--text-bright);
+}
+
+/* Animations */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Input Fields */
+.input-field {
+    background: #2a3f5a;
+    border: 1px solid #111820;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 2px;
+}
+.input-field:focus {
+    outline: 1px solid var(--accent-blue);
+}
+
+/* Wishlist specific */
+.wishlist-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: rgba(0,0,0,0.3);
+}
+
+.wishlist-table th, .wishlist-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.wishlist-table th {
+    background: rgba(0,0,0,0.5);
+    color: var(--accent-blue);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.wishlist-table tr:hover {
+    background: rgba(255,255,255,0.05);
 }
